@@ -1,0 +1,20 @@
+{
+  "name": "atlas-the-joy-of-painting-api",
+  "version": "1.0.0",
+  "description": "README for The Joy of Painting API Project for Atlas School",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon ./api/app"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "babel": "^5.8.38",
+    "csv": "^6.3.10",
+    "express": "^4.19.2",
+    "mongoose": "^8.5.1",
+    "nodemon": "^3.1.4"
+  }
+}
