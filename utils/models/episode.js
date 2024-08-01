@@ -5,8 +5,8 @@ const episodeSchema = new mongoose.Schema({
   title: String,
   source: String,
   month: String,
+  colors: [String],
   subjects: [String],
-  colors: [String]
 });
 
 const Episode = mongoose.model('Episode', episodeSchema);

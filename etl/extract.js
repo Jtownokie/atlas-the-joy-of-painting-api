@@ -13,20 +13,35 @@ async function readCsvFile(filePath) {
 // Function to read and parse the text file
 async function readTextFile(filePath) {
   const data = await fs.readFile(filePath, 'utf-8');
+
+  // Remove Empty Lines
   const lines = data.split('\n').filter(line => line.trim() !== '');
+
+  // Return array of extracted months
   return lines.map(line => {
-    const match = line.match(/"(.+)" \((\w+) \d+, \d+\)/);
-    return match ? { title: match[1], month: match[2] } : null;
+    const match = line.match(/\((\w+) \d+, \d+\)/);
+    return match ? { month: match[1] } : null;
   }).filter(item => item !== null);
 }
 
 // Function to extract relevant data from colors_used.csv
 function extractColorsUsedData(rows) {
-  return rows.map(row => ({
-    title: row.painting_title,
-    source: row.youtube_src,
-    colors: row.colors.split(',').map(color => color.trim())
-  }));
+  return rows.map(row => {
+    // Remove surrounding quotes and parse the string into an array
+    const colorsArray = JSON.parse(row.colors.replace(/'/g, '"'));
+
+    // Clean each color name
+    const cleanedColors = colorsArray.map(color => color.trim().replace(/[\r\n]+/g, ''));
+
+    // Convert cleaned array back to the original string format
+    const cleanedColorsString = `['${cleanedColors.join("','")}']`;
+
+    return {
+      title: row.painting_title,
+      source: row.youtube_src,
+      colors: cleanedColorsString
+    };
+  });
 }
 
 // Function to extract relevant data from subject_matter.csv
