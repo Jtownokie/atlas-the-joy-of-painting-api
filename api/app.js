@@ -2,7 +2,7 @@
 
 import express from 'express';
 import routes from './index.js';
-import connectDB from './utils/db.js';
+import connectDB from '../utils/db.js';
 
 // Express App Setup
 const app = express();
