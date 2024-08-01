@@ -46,10 +46,12 @@ function extractColorsUsedData(rows) {
 
 // Function to extract relevant data from subject_matter.csv
 function extractSubjectMatterData(rows) {
+  // Grab associated subject name if 1 is present in csv values
+  // Then convert subject names into lowercase and capitalize the first letter
   return rows.map(row => {
-    const episode = row.episode;
+    const episode = row.EPISODE;
     const subjects = Object.keys(row)
-      .filter(key => key !== 'episode' && row[key] === '1')
+      .filter(key => key !== 'EPISODE' && row[key] === '1')
       .map(subject => subject.toLowerCase().replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase()));
     return { episode, subjects };
   });
@@ -71,8 +73,10 @@ async function extraction() {
 
     // Combine the extracted data as needed
     const combinedData = extractedSubjectMatterData.map((subjectData, index) => {
+
       const colorsData = extractedColorsUsedData[index];
       const episodeDate = episodeDatesData[index];
+
       return {
         _id: subjectData.episode,
         title: colorsData.title,
@@ -99,10 +103,10 @@ async function extraction() {
 
     // Write the combined data to the new CSV file
     await csvWriter.writeRecords(combinedData);
-    console.log('ETL process completed successfully.');
+    console.log('Extraction process completed successfully.');
 
   } catch (error) {
-    console.error('Error during ETL process:', error);
+    console.error('Error during Extraction process:', error);
   }
 }
 
